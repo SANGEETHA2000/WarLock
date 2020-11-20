@@ -45,10 +45,24 @@ for i in tweets_tokens:
         if j not in stop_words: 
             temp.append(j)
     tweets_without_stop_words.append(temp)
-
-#STEP 5: Final processed tweet messages
-processed_tweets= []
+    
+#STEP 5: Removing emoticons from tweets
+tweets_without_emoticons=[]
 for message in tweets_without_stop_words:
+    temp=[]
+    for word in message:
+        to_remove_pattern = re.compile(pattern = "["
+                                       u"\U0001F600-\U0001F64F"  # emoticons
+                                       u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+                                       u"\U0001F680-\U0001F6FF"  # transport & map symbols
+                                       u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                                       "]+", flags = re.UNICODE)
+        temp.append(to_remove_pattern.sub(r'',word))
+    tweets_without_emoticons.append(temp)
+
+#STEP 6: Final processed tweet messages
+processed_tweets= []
+for message in tweets_without_emoticons:
     s = " "
     s = s.join(message)
     processed_tweets.append(s)
